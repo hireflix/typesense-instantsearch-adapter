@@ -1,0 +1,64 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches:
+      - main
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    env:
+      TAG: patch
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - shell: bash
+      name: "Parse GIT Information"
+      run: |
+        commit_message=$(git log --format=%B -n 1 ${{ github.sha }})
+        echo "MESSAGE<<EOF" >> $GITHUB_ENV
+        echo "${commit_message}" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+    - shell: bash
+      name: "Generate new version"
+      run: |
+        regex='^bump\((\w*)\)'
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        if [[ $MESSAGE =~ $regex ]]; then
+          npm version $(echo ${BASH_REMATCH[1]})
+        else
+          npm version prepatch
+        fi
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: "Setup registry"
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      env:
+        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: npm ci --no-optional
+    
+    - run: npm publish --registry https://npm.pkg.github.com
+      env:
+        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - shell: bash
+      name: "Push New version"
+      if: success()
+      run: |
+        git remote set-url origin "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git push origin --follow-tags

@@ -1,5 +1,5 @@
 {
-  "name": "typesense-instantsearch-adapter",
+  "name": "@hireflix/typesense-instantsearch-adapter",
   "version": "2.3.0-0",
   "description": "Adapter to use InstantSearch UI widgets with Typesense Search",
   "homepage": "https://github.com/typesense/typesense-instantsearch-adapter",
@@ -11,6 +11,9 @@
     "scripts/",
     "index.d.ts"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "keywords": [
     "typesense",
     "sdk",
