@@ -1,6 +1,6 @@
 {
   "name": "@hireflix/typesense-instantsearch-adapter",
-  "version": "2.3.1-0",
+  "version": "2.4.0",
   "description": "Adapter to use InstantSearch UI widgets with Typesense Search",
   "homepage": "https://github.com/hireflix/typesense-instantsearch-adapter",
   "main": "lib/TypesenseInstantsearchAdapter.js",
