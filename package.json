@@ -2,7 +2,7 @@
   "name": "@hireflix/typesense-instantsearch-adapter",
   "version": "2.3.0-0",
   "description": "Adapter to use InstantSearch UI widgets with Typesense Search",
-  "homepage": "https://github.com/typesense/typesense-instantsearch-adapter",
+  "homepage": "https://github.com/hireflix/typesense-instantsearch-adapter",
   "main": "lib/TypesenseInstantsearchAdapter.js",
   "types": "index.d.ts",
   "files": [
@@ -54,7 +54,7 @@
     "url": "https://typesense.org"
   },
   "license": "Apache-2.0",
-  "repository": "typesense/typesense-instantsearch-adapter",
+  "repository": "hireflix/typesense-instantsearch-adapter",
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
